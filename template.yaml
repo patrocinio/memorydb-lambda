@@ -14,9 +14,15 @@ Globals:
     TracingEnabled: true
 
 Parameters:
-  MemoryDBEndpoint:
+  MemoryDBHost:
     Type: String
-    Description: MemoryDB endpoint
+    Description: MemoryDB host
+  SecurityGroupId:
+    Type: String
+    Description: Security Group Id
+  Subnet:
+    Type: String
+    Description: Subnet
 
 
 Resources:
@@ -38,9 +44,14 @@ Resources:
 #          Properties:
 #            Path: /repeat
 #            Method: get
+      VpcConfig:
+        SecurityGroupIds:
+        - !Ref SecurityGroupId
+        SubnetIds:
+        - !Ref Subnet
       Environment:
         Variables:
-          MEMORYDB_ENDPOINT: !Ref MemoryDBEndpoint
+          MEMORYDB_HOST: !Ref MemoryDBHost
 
 
   ApplicationResourceGroup:
