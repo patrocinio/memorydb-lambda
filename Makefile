@@ -11,10 +11,10 @@ get_memorydb_host:
 	$(SET_MEMORYDB_HOST)
 	echo endpoint: $(MEMORYDB_HOST)
 
-GET_SECURITYGROUP_ID=$(shell aws ec2 describe-security-groups --group-name default | jq -r '.SecurityGroups[0].GroupId')
+GET_SECURITYGROUP_ID=$(shell aws ec2 describe-security-groups --filters Name=vpc-id,Values=$(VPC_ID) | jq -r '.SecurityGroups[0].GroupId')
 SET_SECURITYGROUP_ID=$(eval SECURITYGROUP_ID=$(GET_SECURITYGROUP_ID))
 
-get_securitygroup_id: 
+get_securitygroup_id: get_vpc_id
 	$(SET_SECURITYGROUP_ID)
 	echo Security Group ID: $(SECURITYGROUP_ID)
 
