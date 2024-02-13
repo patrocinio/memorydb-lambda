@@ -1,4 +1,3 @@
-import json
 import time
 import json
 import os
@@ -17,10 +16,8 @@ def lambda_handler(event, context):
     )
     
 # Run for 4 minutes
-#    for iter in range(1, 5*60):
-#        res = urllib.request.urlopen(req, timeout=5)
-#        print("#", iter, "Status: ", res.status)
-#        response = json.loads(res.read())
-#        print("Response: ", response)
-#        time.sleep(1)
+    for iter in range(1, 5*60):
+        cluster.set("key", "value")
+        value = cluster.get("key")
+        time.sleep(1)
     
