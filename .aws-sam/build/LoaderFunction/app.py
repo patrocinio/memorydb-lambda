@@ -2,6 +2,23 @@ import time
 import json
 import os
 from redis.cluster import RedisCluster
+import boto3
+
+cloudWatch = boto3.client('cloudwatch')
+ITERATIONS = 1*60
+
+def put_metric(value):
+    cloudWatch.put_metric_data(
+        MetricData = [
+            {
+                'MetricName': 'Time to store value in MemoryDB',
+                'Unit': 'Count',
+                'Value': value
+            }
+        ],
+        Namespace='MemoryDB_metrics'
+    )
+    
 
 def lambda_handler(event, context):
 
@@ -14,10 +31,15 @@ def lambda_handler(event, context):
         ssl=True,
         decode_responses=True,
     )
+
+# Run for 5 minutes
+    for iter in range(1, ITERATIONS):
+        before = time.time()
     
-# Run for 4 minutes
-    for iter in range(1, 5*60):
         cluster.set("key", "value")
+    
+        after = time.time()
+        put_metric(after-before)
         value = cluster.get("key")
         time.sleep(1)
     

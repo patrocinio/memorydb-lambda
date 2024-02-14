@@ -40,6 +40,8 @@ Resources:
         Variables:
           MEMORYDB_HOST:
             Ref: MemoryDBHost
+      Policies:
+      - CloudWatchPutMetricPolicy: {}
     Metadata:
       SamResourceId: LoaderFunction
   ApplicationResourceGroup:

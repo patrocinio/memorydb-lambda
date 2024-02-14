@@ -52,6 +52,9 @@ Resources:
       Environment:
         Variables:
           MEMORYDB_HOST: !Ref MemoryDBHost
+      Policies:
+       - CloudWatchPutMetricPolicy: {}
+
 
 
   ApplicationResourceGroup:

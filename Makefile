@@ -4,7 +4,7 @@ build:
 deploy: get_memorydb_host get_securitygroup_id get_subnet
 	sam deploy --parameter-overrides MemoryDBHost=$(MEMORYDB_HOST) SecurityGroupId=$(SECURITYGROUP_ID) Subnet=$(SUBNET)
 
-GET_MEMORYDB_HOST=$(shell aws memorydb describe-clusters --cluster-name memorydb-cluster | jq -r '.Clusters[0].ClusterEndpoint.Address')
+GET_MEMORYDB_HOST=$(shell aws memorydb describe-clusters --cluster-name memorydb-public | jq -r '.Clusters[0].ClusterEndpoint.Address')
 SET_MEMORYDB_HOST=$(eval MEMORYDB_HOST=$(GET_MEMORYDB_HOST))
 
 get_memorydb_host: 
@@ -25,10 +25,11 @@ get_subnet: get_vpc_id
 	$(SET_SUBNET)
 	echo Subnet: $(SUBNET)
 
-GET_VPC_ID=$(shell aws ec2 describe-vpcs --filters Name=tag:Name,Values=memorydb-vpc | jq -r '.Vpcs[0].VpcId')
+GET_VPC_ID=$(shell aws ec2 describe-vpcs --filters Name=tag:Name,Values=default | jq -r '.Vpcs[0].VpcId')
 SET_VPC_ID=$(eval VPC_ID=$(GET_VPC_ID))
 
 get_vpc_id: 
 	$(SET_VPC_ID)
 	echo VPC ID: $(VPC_ID)
+
 
